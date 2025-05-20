@@ -37,26 +37,26 @@ print(f"Desvio padrão: {desvio_padrao:.3f} m/s²")
 print(f"1º quartil (Q1): {q1:.3f}")
 print(f"3º quartil (Q3): {q3:.3f}")
 
-# Histograma
+# Criar figura com dois subplots
+plt.figure(figsize=(12, 6))
+
+# Histograma com curva gaussiana
 plt.subplot(1, 2, 1)
-plt.hist(g_medido, bins=15, color='skyblue', edgecolor='black')
+n, bins, patches = plt.hist(g_medido, bins=15, color='skyblue', edgecolor='black', density=True)
 plt.axvline(g_real, color='red', linestyle='--', label='g real')
-plt.title("Distribuição das medições de g")
-plt.xlabel("g (m/s²)")
-plt.ylabel("Frequência")
-plt.legend()
 
 # Gerar a distribuição normal (gaussiana)
 mu = media  # média das medições
 sigma = desvio_padrao  # desvio padrão das medições
-x = np.linspace(mu - 4*sigma, mu + 4*sigma, 1000)  # intervalo para o eixo x
+x = np.linspace(min(g_medido), max(g_medido), 1000)  # intervalo para o eixo x
 y = (1 / (sigma * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((x - mu) / sigma) ** 2)
 
 # Plotar a função gaussiana
-plt.plot(x, y, label='Distribuição Normal', color='blue')
-plt.title('Função Gaussiana (Distribuição Normal)')
-plt.xlabel('x')
-plt.ylabel('f(x)')
+plt.plot(x, y, 'r-', linewidth=2, label='Distribuição Normal')
+
+plt.title("Distribuição das medições de g")
+plt.xlabel("g (m/s²)")
+plt.ylabel("Densidade de probabilidade")
 plt.legend()
 
 # Boxplot
